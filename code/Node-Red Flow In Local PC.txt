@@ -1,0 +1,345 @@
+[
+    {
+        "id": "8aa436dcdc93598b",
+        "type": "tab",
+        "label": "Dissertation_Node_Red_Local_PC",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "2fe96b4324e638c6",
+        "type": "inject",
+        "z": "8aa436dcdc93598b",
+        "name": "Read",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "str",
+        "x": 110,
+        "y": 60,
+        "wires": [
+            [
+                "d8f2394c7f207349"
+            ]
+        ]
+    },
+    {
+        "id": "d8f2394c7f207349",
+        "type": "file in",
+        "z": "8aa436dcdc93598b",
+        "name": "Read a spreadsheet file ",
+        "filename": "D:\\MSc Big Data Technologies\\Dissertation\\kvgwcrbjm3-1\\kvgwcrbjm3-1\\pollutant\\pollutant\\ZHM.csv",
+        "filenameType": "str",
+        "format": "",
+        "chunk": false,
+        "sendError": false,
+        "allProps": false,
+        "x": 210,
+        "y": 120,
+        "wires": [
+            [
+                "7ea86178751666a4"
+            ]
+        ]
+    },
+    {
+        "id": "7ea86178751666a4",
+        "type": "book",
+        "z": "8aa436dcdc93598b",
+        "name": "Handle Spreadsheet Files as Book",
+        "raw": false,
+        "x": 200,
+        "y": 200,
+        "wires": [
+            [
+                "af99aa9187ed8f02"
+            ]
+        ]
+    },
+    {
+        "id": "af99aa9187ed8f02",
+        "type": "sheet",
+        "z": "8aa436dcdc93598b",
+        "name": "Sheet With in Excel Workbook",
+        "sheetName": "Sheet1",
+        "x": 170,
+        "y": 260,
+        "wires": [
+            [
+                "82513e1e8eb20fd0"
+            ]
+        ]
+    },
+    {
+        "id": "82513e1e8eb20fd0",
+        "type": "sheet-to-json",
+        "z": "8aa436dcdc93598b",
+        "name": "Convert Sheet Data to JSON Format",
+        "raw": "false",
+        "range": "A1:I35041",
+        "header": "default",
+        "blankrows": false,
+        "x": 190,
+        "y": 320,
+        "wires": [
+            [
+                "faf80ba4090503f3",
+                "1768848c051bafdd"
+            ]
+        ]
+    },
+    {
+        "id": "1768848c051bafdd",
+        "type": "debug",
+        "z": "8aa436dcdc93598b",
+        "name": "debug_sheet",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 510,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "faf80ba4090503f3",
+        "type": "split",
+        "z": "8aa436dcdc93598b",
+        "name": "Split Message in Sequence of Message",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": "1",
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "x": 400,
+        "y": 400,
+        "wires": [
+            [
+                "0bd7eb41a57472ae"
+            ]
+        ]
+    },
+    {
+        "id": "acff4d44afa9e1d7",
+        "type": "inject",
+        "z": "8aa436dcdc93598b",
+        "name": "RESET BUFFER",
+        "props": [
+            {
+                "p": "reset",
+                "v": "true",
+                "vt": "bool"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 140,
+        "y": 500,
+        "wires": [
+            [
+                "0bd7eb41a57472ae"
+            ]
+        ]
+    },
+    {
+        "id": "0bd7eb41a57472ae",
+        "type": "delay",
+        "z": "8aa436dcdc93598b",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "2",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "5",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 360,
+        "y": 500,
+        "wires": [
+            [
+                "ce975de0fd53dbd8",
+                "f3b2a17c80e95d72"
+            ]
+        ]
+    },
+    {
+        "id": "ce975de0fd53dbd8",
+        "type": "debug",
+        "z": "8aa436dcdc93598b",
+        "name": "Raw Data",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 440,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "f3b2a17c80e95d72",
+        "type": "change",
+        "z": "8aa436dcdc93598b",
+        "name": "Convert Value to Number",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.PM2_5",
+                "pt": "msg",
+                "to": "$number(msg.payload.PM2_5)\t",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "payload.PM10",
+                "pt": "msg",
+                "to": "$number(msg.payload.PM10)\t",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "payload.NO2",
+                "pt": "msg",
+                "to": "$number(msg.payload.NO2)",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "payload.O3",
+                "pt": "msg",
+                "to": "$number(msg.payload.O3)\t",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "payload.CO",
+                "pt": "msg",
+                "to": "$number(msg.payload.CO)",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "payload.SO2",
+                "pt": "msg",
+                "to": "$number(msg.payload.SO2)",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "payload.AQI",
+                "pt": "msg",
+                "to": "$number(msg.payload.AQI)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 630,
+        "y": 500,
+        "wires": [
+            [
+                "7b911bab7a748422",
+                "65da5ede557e89e6"
+            ]
+        ]
+    },
+    {
+        "id": "7b911bab7a748422",
+        "type": "debug",
+        "z": "8aa436dcdc93598b",
+        "name": "Final Result",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 690,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "65da5ede557e89e6",
+        "type": "mqtt out",
+        "z": "8aa436dcdc93598b",
+        "name": "Hive Server For Publishing Message ",
+        "topic": "pub99932/dev-node3213/telemetry",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "1c9dc0f62cd53768",
+        "x": 830,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "1c9dc0f62cd53768",
+        "type": "mqtt-broker",
+        "name": "Hive",
+        "broker": "broker.hivemq.com",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    }
+]
